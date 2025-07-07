@@ -171,7 +171,7 @@ box-shadow: 2px 2px 4px var(--light-shadow-dark),
 -2px -2px 4px var(--light-shadow-white);
 }
 .dark-mode .slider:before {
-background-color: var(--dark-bg);
+background-color: yellow;
 box-shadow: 2px 2px 4px var(--dark-shadow-dark),
 -2px -2px 4px var(--dark-shadow-light);
 }
@@ -256,8 +256,8 @@ opacity: 0;
 .splash-card {
   box-shadow:
     8px 8px 20px #d1d9e6,
-    -8px -8px 20px #ffffff;
-  background: #e9eef6;
+    -8px -8px 20px #141414;
+  background: #272727;
 }
 
 #progress-bar {
@@ -268,16 +268,16 @@ opacity: 0;
 
 
 </head>
-<body class="light-mode min-h-screen pt-20 pb-16">
+<body class="dark-mode min-h-screen pt-20 pb-16">
 
 <!-- Splash Screen -->
-<div id="splash-screen" class="fixed inset-0 flex items-center justify-center bg-[#e9eef6] z-50">
+<div id="splash-screen" class="fixed inset-0 flex items-center justify-center bg-[#272727] z-50">
   <div class="splash-card neumorphic-card rounded-xl p-8 text-center max-w-xs w-full">
-    <div class="w-20 h-20 mx-auto mb-4 rounded-full flex items-center justify-center shadow-inner bg-[#f5f5f5]">
-      <img src="https://sureshapps.github.io/iBookmark/iBookmark.png" alt="Logo" class="w-17 h-17">
+    <div class="w-20 h-20 mx-auto mb-4 rounded-full flex items-center justify-center shadow-inner bg-[#272727]">
+      <img src="https://sureshapps.github.io/iBookmark/iBookmark-d.PNG" alt="Logo" class="w-17 h-17">
     </div>
     <p class="text-xs tracking-widest text-gray-500 mb-1">LOADING</p>
-    <h1 class="text-2xl font-bold text-gray-800 mb-4">iBookmark</h1>
+    <h1 class="text-2xl font-bold text-white-800 mb-4">iBookmark</h1>
     <div class="relative w-full h-4 bg-[#dde3eb] rounded-full overflow-hidden shadow-inner">
       <div id="progress-bar" class="absolute top-0 left-0 h-full bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full" style="width: 0%"></div>
     </div>
@@ -302,8 +302,8 @@ opacity: 0;
 <span class="slider"></span>
 </label>
 <div class="w-6 h-6 flex items-center justify-center">
-<i class="ri-moon-line ri-lg dark-icon"></i>
-<i class="ri-sun-line ri-lg light-icon hidden"></i>
+<i class="ri-moon-line ri-lg dark-icon hidden"></i>
+<i class="ri-sun-line ri-lg light-icon"></i>
 </div>
 </div>
 </div>
