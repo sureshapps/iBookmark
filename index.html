@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <!-- Mobile view styles -->
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=no">
+<title>iBookmark.my</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#4A90E2',secondary:'#6C5CE7'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.cdnfonts.com/css/gatsbyflf" rel="stylesheet">
+                
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+:root {
+--light-bg: #EBECF0;
+--light-shadow-white: #FFFFFF;
+--light-shadow-dark: #BABECC;
+--light-text: #2D3436;
+--dark-bg: #272727;
+--dark-shadow-dark: #141414;
+--dark-shadow-light: #212121;
+--dark-text: #E4EBF5;
+--accent: yellow;
+}
+body {
+font-family: 'Inter', sans-serif;
+transition: background-color 0.3s, color 0.3s;
+}
+body.light-mode {
+background-color: var(--light-bg);
+color: var(--light-text);
+}
+
+
+
+body.dark-mode {
+background-color: var(--dark-bg);
+color: var(--dark-text);
+}
+.neumorphic-card {
+transition: all 0.3s ease;
+}
+.light-mode .neumorphic-card {
+background: var(--light-bg);
+box-shadow: 5px 5px 10px var(--light-shadow-dark),
+-5px -5px 10px var(--light-shadow-white);
+}
+.dark-mode .neumorphic-card {
+background: var(--dark-bg);
+box-shadow: 5px 5px 10px var(--dark-shadow-dark),
+-5px -5px 10px var(--dark-shadow-light);
+}
+.light-mode .neumorphic-inset {
+background: var(--light-bg);
+box-shadow: inset 3px 3px 6px var(--light-shadow-dark),
+inset -3px -3px 6px var(--light-shadow-white);
+}
+.dark-mode .neumorphic-inset {
+background: var(--dark-bg);
+box-shadow: inset 3px 3px 6px var(--dark-shadow-dark),
+inset -3px -3px 6px var(--dark-shadow-light);
+}
+.light-mode .neumorphic-button {
+background: var(--light-bg);
+box-shadow: 3px 3px 6px var(--light-shadow-dark),
+-3px -3px 6px var(--light-shadow-white);
+}
+.dark-mode .neumorphic-button {
+background: var(--dark-bg);
+box-shadow: 3px 3px 6px var(--dark-shadow-dark),
+-3px -3px 6px var(--dark-shadow-light);
+}
+.neumorphic-button:active {
+transform: scale(0.98);
+}
+.light-mode .neumorphic-button:active {
+box-shadow: inset 2px 2px 4px var(--light-shadow-dark),
+inset -2px -2px 4px var(--light-shadow-white);
+}
+.dark-mode .neumorphic-button:active {
+box-shadow: inset 2px 2px 4px var(--dark-shadow-dark),
+inset -2px -2px 4px var(--dark-shadow-light);
+}
+.bookmark-item {
+transition: all 0.3s ease;
+}
+.light-mode .bookmark-item:hover {
+box-shadow: 6px 6px 12px var(--light-shadow-dark),
+-6px -6px 12px var(--light-shadow-white);
+}
+.dark-mode .bookmark-item:hover {
+box-shadow: 6px 6px 12px var(--dark-shadow-dark),
+-6px -6px 12px var(--dark-shadow-light);
+}
+.skeleton {
+animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+0% { opacity: 0.6; }
+50% { opacity: 0.8; }
+100% { opacity: 0.6; }
+}
+.switch {
+position: relative;
+display: inline-block;
+width: 50px;
+height: 24px;
+}
+.switch input {
+opacity: 0;
+width: 0;
+height: 0;
+}
+.slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+transition: .3s;
+border-radius: 34px;
+}
+.light-mode .slider {
+background-color: var(--light-bg);
+box-shadow: inset 2px 2px 4px var(--light-shadow-dark),
+inset -2px -2px 4px var(--light-shadow-white);
+}
+.dark-mode .slider {
+background-color: var(--dark-bg);
+box-shadow: inset 2px 2px 4px var(--dark-shadow-dark),
+inset -2px -2px 4px var(--dark-shadow-light);
+}
+.slider:before {
+position: absolute;
+content: "";
+height: 18px;
+width: 18px;
+left: 3px;
+bottom: 3px;
+transition: .3s;
+border-radius: 50%;
+}
+.light-mode .slider:before {
+background-color: red;
+box-shadow: 2px 2px 4px var(--light-shadow-dark),
+-2px -2px 4px var(--light-shadow-white);
+}
+.dark-mode .slider:before {
+background-color: var(--dark-bg);
+box-shadow: 2px 2px 4px var(--dark-shadow-dark),
+-2px -2px 4px var(--dark-shadow-light);
+}
+input:checked + .slider:before {
+transform: translateX(26px);
+}
+.light-mode input:checked + .slider:before {
+background-color: var(--accent);
+}
+.dark-mode input:checked + .slider:before {
+background-color: var(--accent);
+}
+.ripple {
+position: absolute;
+border-radius: 50%;
+transform: scale(0);
+animation: ripple 0.6s linear;
+background-color: rgba(255, 255, 255, 0.3);
+}
+@keyframes ripple {
+to {
+transform: scale(2.5);
+opacity: 0;
+}
+}
+
+
+.batn {
+  margin: 0.05rem;
+  padding: 0.2rem 0.8rem;
+  border-radius: 0.5rem;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.batn kbd {
+  margin: 0.08rem;
+  padding: 0.001rem 0.2rem;
+  border-radius: 0.25rem;
+  color: #3e6eff;
+}
+
+.batn-primary {
+  background: linear-gradient(#1f5afe, #0f4cf5);
+  color: white;
+  box-shadow: inset 0pt 4pt 3pt -2pt #386fff, 0pt 4pt 5pt -3pt #0009;
+  border-bottom: 2pt solid #083acd;
+  transition: all 0.5s ease;
+}
+
+.batn-primary:hover {
+  border-bottom: 4pt solid #083acd;
+  translate: 0pt -1pt;
+}
+
+.batn-primary:active {
+  box-shadow: inset 0pt 4pt 3pt -2pt #386fff, 0pt 4pt 5pt -3pt #0000;
+  border-bottom: 1pt solid #083acd;
+  translate: 0pt 0pt;
+}
+
+.batn-primary kbd {
+  background-color: #ffffff;
+  box-shadow: inset 0pt 0pt 0pt -2pt #1f54f0, inset 0pt 0pt 0pt -2pt #658dff,
+    0pt 2pt 2pt -2pt #0005, 0pt 0pt 0pt 2pt #0d47f0;
+}
+
+.batn-base {
+  background: #386fff;
+}
+
+
+</style>
+
+
+
+</head>
+<body class="light-mode min-h-screen pt-20 pb-16">
+
+
+<!-- Header -->
+<header class="fixed top-0 left-0 w-full z-10 py-3 px-4 neumorphic-card">
+<div class="max-w-md mx-auto flex items-center justify-between">
+<!-- From Uiverse.io by SelfMadeSystem --> 
+<button class="batn batn-primary">
+ <kbd class="batn-kbd">i</kbd>
+  <span class="batn-txt">Bookmark</span>
+ 
+</button>
+<div class="flex items-center space-x-4">
+
+
+
+
+<label class="switch">
+<input type="checkbox" id="theme-toggle">
+<span class="slider"></span>
+</label>
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-moon-line ri-lg dark-icon"></i>
+<i class="ri-sun-line ri-lg light-icon hidden"></i>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="max-w-md mx-auto px-4">
+<!-- Search Bar -->
+<div class="relative mb-6">
+<div class="neumorphic-inset rounded-full flex items-center px-4 py-2">
+<div class="w-6 h-6 flex items-center justify-center mr-2">
+<i class="ri-search-line ri-lg"></i>
+</div>
+<input type="text" id="search-input" placeholder="Search bookmarks..." class="w-full bg-transparent border-none outline-none text-sm">
+<div class="w-6 h-6 flex items-center justify-center cursor-pointer ml-2">
+<i class="ri-magic-line ri-lg"></i>
+</div>
+</div>
+<div id="search-suggestions" class="absolute left-0 right-0 mt-2 rounded-lg neumorphic-card p-2 hidden">
+<div class="text-xs mb-1 opacity-70">AI Suggestions</div>
+<div id="suggestions-list"></div>
+</div>
+</div>
+<!-- Category Filter -->
+<div class="mb-6 overflow-x-auto whitespace-nowrap py-1 hide-scrollbar">
+<div class="inline-flex space-x-2">
+<button class="neumorphic-button !rounded-button bg-red-500 hover:bg-red-600 px-4 py-2 text-sm cursor-pointer active">All</button>
+<button class="neumorphic-button !rounded-button hover:bg-red-600 px-4 py-2 text-sm cursor-pointer">Work</button>
+<button class="neumorphic-button !rounded-button hover:bg-red-600 px-4 py-2 text-sm cursor-pointer">Personal</button>
+<button class="neumorphic-button !rounded-button hover:bg-red-600 px-4 py-2 text-sm cursor-pointer">Shopping</button>
+<button class="neumorphic-button !rounded-button hover:bg-red-600 px-4 py-2 text-sm cursor-pointer">News</button>
+</div>
+</div>
+<!-- Bookmarks List -->
+<div id="bookmarks-container" class="space-y-4">
+<!-- Bookmark items will be loaded here -->
+</div>
+<!-- Empty State (hidden by default) -->
+<div id="empty-state" class="hidden flex flex-col items-center justify-center py-12">
+<div class="w-24 h-24 flex items-center justify-center mb-6 neumorphic-card rounded-full">
+<i class="ri-bookmark-line ri-3x text-primary"></i>
+</div>
+<h3 class="text-lg font-medium mb-2">No bookmarks yet</h3>
+<p class="text-sm opacity-70 mb-6 text-center">Add your first bookmark to get started</p>
+<button id="add-first-bookmark" class="neumorphic-button !rounded-button px-6 py-3 text-primary font-medium cursor-pointer">
+Add Bookmark
+</button>
+</div>
+<!-- Loading State (hidden by default) -->
+<div id="loading-state" class="space-y-4 hidden">
+<div class="neumorphic-card rounded-lg p-4 skeleton">
+<div class="h-6 w-3/4 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+<div class="h-4 w-1/2 rounded-full bg-gray-200 dark:bg-gray-700 mt-2"></div>
+</div>
+<div class="neumorphic-card rounded-lg p-4 skeleton">
+<div class="h-6 w-3/4 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+<div class="h-4 w-1/2 rounded-full bg-gray-200 dark:bg-gray-700 mt-2"></div>
+</div>
+<div class="neumorphic-card rounded-lg p-4 skeleton">
+<div class="h-6 w-3/4 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+<div class="h-4 w-1/2 rounded-full bg-gray-200 dark:bg-gray-700 mt-2"></div>
+</div>
+</div>
+</main>
+<!-- Floating Action Button -->
+<div class="fixed bottom-6 right-6">
+<button id="add-bookmark" class="w-14 h-14 rounded-full neumorphic-button2 flex items-center justify-center cursor-pointer bg-red-500 text-white hover:bg-red-600 transition-colors">
+<i class="ri-add-fill ri-xl"></i>
+</button>
+</div>
+<!-- Add/Edit Bookmark Modal (hidden by default) -->
+<div id="bookmark-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+<div class="absolute inset-0 bg-black bg-opacity-30 backdrop-blur-sm" id="modal-backdrop"></div>
+<div class="neumorphic-card rounded-lg p-6 w-11/12 max-w-md relative z-10">
+<h3 id="modal-title" class="text-xl font-semibold mb-4">Add Bookmark</h3>
+<form id="bookmark-form">
+<div class="mb-4">
+<label class="block text-sm font-medium mb-1">Title</label>
+<div class="neumorphic-inset rounded-lg">
+<input type="text" id="bookmark-title" class="w-full bg-transparent border-none outline-none px-4 py-3 text-sm" placeholder="Website name">
+</div>
+</div>
+<div class="mb-4">
+<label class="block text-sm font-medium mb-1">URL</label>
+<div class="neumorphic-inset rounded-lg">
+<input type="url" id="bookmark-url" class="w-full bg-transparent border-none outline-none px-4 py-3 text-sm" placeholder="https://example.com">
+</div>
+</div>
+<div class="mb-6">
+<label class="block text-sm font-medium mb-1">Category</label>
+<div class="neumorphic-inset rounded-lg px-4 py-3 relative">
+<div class="flex items-center justify-between cursor-pointer" id="category-selector">
+<span id="selected-category" class="text-sm">Select category</span>
+<div class="w-5 h-5 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</div>
+<div id="category-dropdown" class="absolute left-0 right-0 mt-2 neumorphic-card rounded-lg p-2 hidden z-20">
+<div class="category-option py-2 px-3 rounded cursor-pointer hover:bg-opacity-10 hover:bg-black dark:hover:bg-white dark:hover:bg-opacity-10">Work</div>
+<div class="category-option py-2 px-3 rounded cursor-pointer hover:bg-opacity-10 hover:bg-black dark:hover:bg-white dark:hover:bg-opacity-10">Personal</div>
+<div class="category-option py-2 px-3 rounded cursor-pointer hover:bg-opacity-10 hover:bg-black dark:hover:bg-white dark:hover:bg-opacity-10">Shopping</div>
+<div class="category-option py-2 px-3 rounded cursor-pointer hover:bg-opacity-10 hover:bg-black dark:hover:bg-white dark:hover:bg-opacity-10">News</div>
+<div class="category-option py-2 px-3 rounded cursor-pointer hover:bg-opacity-10 hover:bg-black dark:hover:bg-white dark:hover:bg-opacity-10">Other</div>
+</div>
+</div>
+</div>
+<div class="flex space-x-3">
+<button type="button" id="cancel-bookmark" class="flex-1 neumorphic-button !rounded-button py-3 text-sm cursor-pointer">Cancel</button>
+<button type="submit" id="save-bookmark" class="flex-1 neumorphic-button !rounded-button py-3 text-sm cursor-pointer bg-red-500 text-white hover:bg-red-600 transition-colors">Save</button>
+</div>
+</form>
+</div>
+</div>
+<!-- Confirmation Dialog (hidden by default) -->
+<div id="confirm-dialog" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+<div class="absolute inset-0 bg-black bg-opacity-30 backdrop-blur-sm" id="confirm-backdrop"></div>
+<div class="neumorphic-card rounded-lg p-6 w-11/12 max-w-sm relative z-10">
+<h3 class="text-lg font-semibold mb-3">Delete Bookmark</h3>
+<p class="text-sm mb-6">Are you sure you want to delete this bookmark? This action cannot be undone.</p>
+<div class="flex space-x-3">
+<button id="cancel-delete" class="flex-1 neumorphic-button !rounded-button py-3 text-sm cursor-pointer">Cancel</button>
+<button id="confirm-delete" class="flex-1 neumorphic-button !rounded-button py-3 text-sm cursor-pointer bg-primary text-white">Delete</button>
+</div>
+</div>
+</div>
+
+
+
+<!-- Scripts -->
+<script id="theme-toggle-script">
+document.addEventListener('DOMContentLoaded', function() {
+const themeToggle = document.getElementById('theme-toggle');
+const darkIcon = document.querySelector('.dark-icon');
+const lightIcon = document.querySelector('.light-icon');
+// Check for saved theme preference or use device preference
+const savedTheme = localStorage.getItem('theme');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+document.body.classList.replace('light-mode', 'dark-mode');
+themeToggle.checked = true;
+darkIcon.classList.add('hidden');
+lightIcon.classList.remove('hidden');
+}
+// Theme toggle functionality
+themeToggle.addEventListener('change', function() {
+if (this.checked) {
+document.body.classList.replace('light-mode', 'dark-mode');
+localStorage.setItem('theme', 'dark');
+darkIcon.classList.add('hidden');
+lightIcon.classList.remove('hidden');
+} else {
+document.body.classList.replace('dark-mode', 'light-mode');
+localStorage.setItem('theme', 'light');
+darkIcon.classList.remove('hidden');
+lightIcon.classList.add('hidden');
+}
+});
+});
+</script>
+<script id="bookmarks-data-script">
+document.addEventListener('DOMContentLoaded', function() {
+// Sample bookmark data
+const bookmarks = [
+{
+id: 1,
+title: 'GitHub - Where the world builds software',
+url: 'https://github.com',
+favicon: 'https://github.com/favicon.ico',
+category: 'Work',
+dateAdded: '2025-07-01'
+},
+{
+id: 2,
+title: 'Stack Overflow - Where Developers Learn & Share',
+url: 'https://stackoverflow.com',
+favicon: 'https://stackoverflow.com/favicon.ico',
+category: 'Work',
+dateAdded: '2025-07-02'
+},
+{
+id: 3,
+title: 'Medium - Where good ideas find you',
+url: 'https://medium.com',
+favicon: 'https://medium.com/favicon.ico',
+category: 'Personal',
+dateAdded: '2025-07-03'
+},
+{
+id: 4,
+title: 'Amazon - Online Shopping for Electronics, Apparel, Books & More',
+url: 'https://amazon.com',
+favicon: 'https://amazon.com/favicon.ico',
+category: 'Shopping',
+dateAdded: '2025-07-04'
+},
+{
+id: 5,
+title: 'The New York Times - Breaking News, US News, World News',
+url: 'https://nytimes.com',
+favicon: 'https://nytimes.com/favicon.ico',
+category: 'News',
+dateAdded: '2025-07-05'
+},
+{
+id: 6,
+title: 'Netflix - Watch TV Shows Online, Watch Movies Online',
+url: 'https://netflix.com',
+favicon: 'https://netflix.com/favicon.ico',
+category: 'Personal',
+dateAdded: '2025-07-06'
+},
+{
+id: 7,
+title: 'YouTube - Share your videos with friends and the world',
+url: 'https://youtube.com',
+favicon: 'https://youtube.com/favicon.ico',
+category: 'Personal',
+dateAdded: '2025-07-07'
+}
+];
+// Store bookmarks in localStorage
+if (!localStorage.getItem('bookmarks')) {
+localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+}
+// Load and display bookmarks
+displayBookmarks();
+});
+function getBookmarks() {
+return JSON.parse(localStorage.getItem('bookmarks')) || [];
+}
+function saveBookmarks(bookmarks) {
+localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+}
+function displayBookmarks(filterText = '', filterCategory = 'All') {
+const bookmarksContainer = document.getElementById('bookmarks-container');
+const emptyState = document.getElementById('empty-state');
+const bookmarks = getBookmarks();
+// Filter bookmarks based on search text and category
+let filteredBookmarks = bookmarks;
+if (filterText) {
+filteredBookmarks = filteredBookmarks.filter(bookmark =>
+bookmark.title.toLowerCase().includes(filterText.toLowerCase()) ||
+bookmark.url.toLowerCase().includes(filterText.toLowerCase())
+);
+}
+if (filterCategory !== 'All') {
+filteredBookmarks = filteredBookmarks.filter(bookmark =>
+bookmark.category === filterCategory
+);
+}
+// Clear container
+bookmarksContainer.innerHTML = '';
+// Show empty state if no bookmarks
+if (filteredBookmarks.length === 0) {
+if (bookmarks.length === 0) {
+emptyState.classList.remove('hidden');
+} else {
+bookmarksContainer.innerHTML = `
+<div class="flex flex-col items-center justify-center py-8">
+<p class="text-sm opacity-70 mb-2">No bookmarks match your search</p>
+<button id="clear-search" class="text-primary text-sm cursor-pointer">Clear search</button>
+</div>
+`;
+document.getElementById('clear-search').addEventListener('click', function() {
+document.getElementById('search-input').value = '';
+displayBookmarks();
+});
+}
+return;
+}
+emptyState.classList.add('hidden');
+// Create bookmark elements
+filteredBookmarks.forEach(bookmark => {
+const bookmarkElement = document.createElement('div');
+bookmarkElement.className = 'bookmark-item neumorphic-card rounded-lg p-4 cursor-pointer relative overflow-hidden';
+bookmarkElement.setAttribute('data-id', bookmark.id);
+const faviconUrl = bookmark.favicon || `https://www.google.com/s2/favicons?domain=${bookmark.url}`;
+bookmarkElement.innerHTML = `
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center mr-3 neumorphic-inset rounded-full overflow-hidden">
+<img src="${faviconUrl}" alt="" class="w-4 h-4" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2216%22 height=%2216%22 viewBox=%220 0 24 24%22><path fill=%22%234A90E2%22 d=%22M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z%22/></svg>';">
+</div>
+<div class="flex-1 min-w-0">
+<h3 class="text-sm font-medium truncate">${bookmark.title}</h3>
+<p class="text-xs opacity-70 truncate mb-1">${bookmark.url}</p>
+<span class="inline-block text-[10px] px-2 py-0.5 rounded-full bg-opacity-10 bg-primary text-primary">${bookmark.category}</span>
+</div>
+<div class="flex space-x-1 ml-2">
+<div class="w-8 h-8 flex items-center justify-center neumorphic-button rounded-full edit-bookmark cursor-pointer">
+<i class="ri-edit-line"></i>
+</div>
+<div class="w-8 h-8 flex items-center justify-center neumorphic-button rounded-full delete-bookmark cursor-pointer">
+<i class="ri-delete-bin-line text-red-500"></i>
+</div>
+</div>
+</div>
+`;
+bookmarksContainer.appendChild(bookmarkElement);
+// Add ripple effect
+bookmarkElement.addEventListener('click', createRippleEffect);
+// Open URL on click (except when clicking edit or delete buttons)
+bookmarkElement.addEventListener('click', function(e) {
+if (!e.target.closest('.edit-bookmark') && !e.target.closest('.delete-bookmark')) {
+window.open(bookmark.url, '_blank');
+}
+});
+});
+// Add event listeners for edit and delete buttons
+document.querySelectorAll('.edit-bookmark').forEach(button => {
+button.addEventListener('click', function(e) {
+e.stopPropagation();
+const bookmarkId = parseInt(this.closest('.bookmark-item').getAttribute('data-id'));
+editBookmark(bookmarkId);
+});
+});
+document.querySelectorAll('.delete-bookmark').forEach(button => {
+button.addEventListener('click', function(e) {
+e.stopPropagation();
+const bookmarkId = parseInt(this.closest('.bookmark-item').getAttribute('data-id'));
+showDeleteConfirmation(bookmarkId);
+});
+});
+}
+function createRippleEffect(event) {
+const button = event.currentTarget;
+const circle = document.createElement("span");
+const diameter = Math.max(button.clientWidth, button.clientHeight);
+circle.style.width = circle.style.height = `${diameter}px`;
+circle.style.left = `${event.clientX - button.getBoundingClientRect().left - diameter / 2}px`;
+circle.style.top = `${event.clientY - button.getBoundingClientRect().top - diameter / 2}px`;
+circle.classList.add("ripple");
+const ripple = button.querySelector(".ripple");
+if (ripple) {
+ripple.remove();
+}
+button.appendChild(circle);
+}
+</script>
+<script id="bookmark-modal-script">
+document.addEventListener('DOMContentLoaded', function() {
+const addBookmarkButton = document.getElementById('add-bookmark');
+const addFirstBookmarkButton = document.getElementById('add-first-bookmark');
+const bookmarkModal = document.getElementById('bookmark-modal');
+const modalBackdrop = document.getElementById('modal-backdrop');
+const cancelBookmarkButton = document.getElementById('cancel-bookmark');
+const bookmarkForm = document.getElementById('bookmark-form');
+const modalTitle = document.getElementById('modal-title');
+let currentBookmarkId = null;
+// Open modal to add new bookmark
+addBookmarkButton.addEventListener('click', function() {
+openBookmarkModal();
+});
+addFirstBookmarkButton.addEventListener('click', function() {
+openBookmarkModal();
+});
+// Close modal when clicking backdrop
+modalBackdrop.addEventListener('click', function() {
+closeBookmarkModal();
+});
+// Close modal with cancel button
+cancelBookmarkButton.addEventListener('click', function() {
+closeBookmarkModal();
+});
+// Handle form submission
+bookmarkForm.addEventListener('submit', function(e) {
+e.preventDefault();
+const title = document.getElementById('bookmark-title').value.trim();
+const url = document.getElementById('bookmark-url').value.trim();
+const category = document.getElementById('selected-category').textContent;
+if (!title || !url) {
+// Show validation error
+return;
+}
+// Ensure URL has protocol
+let formattedUrl = url;
+if (!url.startsWith('http://') && !url.startsWith('https://')) {
+formattedUrl = 'https://' + url;
+}
+const bookmarks = getBookmarks();
+if (currentBookmarkId) {
+// Update existing bookmark
+const index = bookmarks.findIndex(b => b.id === currentBookmarkId);
+if (index !== -1) {
+bookmarks[index].title = title;
+bookmarks[index].url = formattedUrl;
+bookmarks[index].category = category !== 'Select category' ? category : 'Other';
+}
+} else {
+// Add new bookmark
+const newId = bookmarks.length > 0 ? Math.max(...bookmarks.map(b => b.id)) + 1 : 1;
+bookmarks.push({
+id: newId,
+title: title,
+url: formattedUrl,
+favicon: `https://www.google.com/s2/favicons?domain=${formattedUrl}`,
+category: category !== 'Select category' ? category : 'Other',
+dateAdded: new Date().toISOString().split('T')[0]
+});
+}
+saveBookmarks(bookmarks);
+displayBookmarks();
+closeBookmarkModal();
+});
+// Category dropdown functionality
+const categorySelector = document.getElementById('category-selector');
+const categoryDropdown = document.getElementById('category-dropdown');
+const selectedCategory = document.getElementById('selected-category');
+categorySelector.addEventListener('click', function() {
+categoryDropdown.classList.toggle('hidden');
+});
+document.querySelectorAll('.category-option').forEach(option => {
+option.addEventListener('click', function() {
+selectedCategory.textContent = this.textContent;
+categoryDropdown.classList.add('hidden');
+});
+});
+// Close dropdown when clicking outside
+document.addEventListener('click', function(e) {
+if (!categorySelector.contains(e.target) && !categoryDropdown.contains(e.target)) {
+categoryDropdown.classList.add('hidden');
+}
+});
+});
+function openBookmarkModal(bookmarkId = null) {
+const bookmarkModal = document.getElementById('bookmark-modal');
+const modalTitle = document.getElementById('modal-title');
+const titleInput = document.getElementById('bookmark-title');
+const urlInput = document.getElementById('bookmark-url');
+const selectedCategory = document.getElementById('selected-category');
+currentBookmarkId = bookmarkId;
+// Reset form
+document.getElementById('bookmark-form').reset();
+selectedCategory.textContent = 'Select category';
+if (bookmarkId) {
+// Edit existing bookmark
+modalTitle.textContent = 'Edit Bookmark';
+const bookmarks = getBookmarks();
+const bookmark = bookmarks.find(b => b.id === bookmarkId);
+if (bookmark) {
+titleInput.value = bookmark.title;
+urlInput.value = bookmark.url;
+selectedCategory.textContent = bookmark.category;
+}
+} else {
+// Add new bookmark
+modalTitle.textContent = 'Add Bookmark';
+}
+bookmarkModal.classList.remove('hidden');
+titleInput.focus();
+}
+function closeBookmarkModal() {
+const bookmarkModal = document.getElementById('bookmark-modal');
+bookmarkModal.classList.add('hidden');
+currentBookmarkId = null;
+}
+function editBookmark(bookmarkId) {
+openBookmarkModal(bookmarkId);
+}
+</script>
+<script id="delete-confirmation-script">
+document.addEventListener('DOMContentLoaded', function() {
+const confirmDialog = document.getElementById('confirm-dialog');
+const confirmBackdrop = document.getElementById('confirm-backdrop');
+const cancelDeleteButton = document.getElementById('cancel-delete');
+const confirmDeleteButton = document.getElementById('confirm-delete');
+let bookmarkToDelete = null;
+// Close dialog when clicking backdrop
+confirmBackdrop.addEventListener('click', function() {
+closeConfirmDialog();
+});
+// Close dialog with cancel button
+cancelDeleteButton.addEventListener('click', function() {
+closeConfirmDialog();
+});
+// Handle delete confirmation
+confirmDeleteButton.addEventListener('click', function() {
+if (bookmarkToDelete) {
+deleteBookmark(bookmarkToDelete);
+}
+closeConfirmDialog();
+});
+});
+function showDeleteConfirmation(bookmarkId) {
+const confirmDialog = document.getElementById('confirm-dialog');
+bookmarkToDelete = bookmarkId;
+confirmDialog.classList.remove('hidden');
+}
+function closeConfirmDialog() {
+const confirmDialog = document.getElementById('confirm-dialog');
+confirmDialog.classList.add('hidden');
+bookmarkToDelete = null;
+}
+function deleteBookmark(bookmarkId) {
+let bookmarks = getBookmarks();
+bookmarks = bookmarks.filter(bookmark => bookmark.id !== bookmarkId);
+saveBookmarks(bookmarks);
+displayBookmarks();
+}
+</script>
+<script id="search-filter-script">
+document.addEventListener('DOMContentLoaded', function() {
+const searchInput = document.getElementById('search-input');
+const searchSuggestions = document.getElementById('search-suggestions');
+const suggestionsList = document.getElementById('suggestions-list');
+// Search functionality
+searchInput.addEventListener('input', function() {
+const searchText = this.value.trim();
+displayBookmarks(searchText);
+// Show AI suggestions if search text is not empty
+if (searchText.length > 0) {
+generateAiSuggestions(searchText);
+} else {
+searchSuggestions.classList.add('hidden');
+}
+});
+// Category filter buttons
+document.querySelectorAll('.neumorphic-button').forEach(button => {
+if (button.textContent === 'All' || button.textContent === 'Work' ||
+button.textContent === 'Personal' || button.textContent === 'Shopping' ||
+button.textContent === 'News') {
+button.addEventListener('click', function() {
+// Remove active class from all buttons
+document.querySelectorAll('.neumorphic-button').forEach(btn => {
+btn.classList.remove('active');
+btn.classList.remove('bg-primary');
+btn.classList.remove('text-white');
+});
+// Add active class to clicked button
+this.classList.add('active');
+this.classList.add('bg-primary');
+this.classList.add('text-white');
+// Filter bookmarks by category
+const category = this.textContent;
+const searchText = searchInput.value.trim();
+displayBookmarks(searchText, category);
+});
+}
+});
+});
+function generateAiSuggestions(searchText) {
+const searchSuggestions = document.getElementById('search-suggestions');
+const suggestionsList = document.getElementById('suggestions-list');
+const bookmarks = getBookmarks();
+// Clear previous suggestions
+suggestionsList.innerHTML = '';
+// Simple AI suggestion algorithm
+// 1. Exact matches in title
+const exactMatches = bookmarks.filter(b =>
+b.title.toLowerCase().includes(searchText.toLowerCase())
+).slice(0, 2);
+// 2. Domain matches
+const domainMatches = bookmarks.filter(b =>
+b.url.toLowerCase().includes(searchText.toLowerCase()) &&
+!exactMatches.some(m => m.id === b.id)
+).slice(0, 2);
+// 3. Category matches based on search text
+const categories = ['Work', 'Personal', 'Shopping', 'News'];
+const matchingCategories = categories.filter(c =>
+c.toLowerCase().includes(searchText.toLowerCase())
+);
+// Create suggestion elements
+if (exactMatches.length > 0 || domainMatches.length > 0 || matchingCategories.length > 0) {
+// Title matches
+exactMatches.forEach(bookmark => {
+const suggestion = document.createElement('div');
+suggestion.className = 'py-2 px-3 rounded cursor-pointer hover:bg-opacity-10 hover:bg-black dark:hover:bg-white dark:hover:bg-opacity-10 flex items-center';
+suggestion.innerHTML = `
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-bookmark-line"></i>
+</div>
+<span class="text-sm truncate">${bookmark.title}</span>
+`;
+suggestion.addEventListener('click', function() {
+window.open(bookmark.url, '_blank');
+});
+suggestionsList.appendChild(suggestion);
+});
+// URL matches
+domainMatches.forEach(bookmark => {
+const suggestion = document.createElement('div');
+suggestion.className = 'py-2 px-3 rounded cursor-pointer hover:bg-opacity-10 hover:bg-black dark:hover:bg-white dark:hover:bg-opacity-10 flex items-center';
+suggestion.innerHTML = `
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-link"></i>
+</div>
+<span class="text-sm truncate">${bookmark.url}</span>
+`;
+suggestion.addEventListener('click', function() {
+window.open(bookmark.url, '_blank');
+});
+suggestionsList.appendChild(suggestion);
+});
+// Category suggestions
+matchingCategories.forEach(category => {
+const suggestion = document.createElement('div');
+suggestion.className = 'py-2 px-3 rounded cursor-pointer hover:bg-opacity-10 hover:bg-black dark:hover:bg-white dark:hover:bg-opacity-10 flex items-center';
+suggestion.innerHTML = `
+<div class="w-5 h-5 flex items-center justify-center mr-2">
+<i class="ri-folder-line"></i>
+</div>
+<span class="text-sm">Category: ${category}</span>
+`;
+suggestion.addEventListener('click', function() {
+// Filter by this category
+document.querySelectorAll('.neumorphic-button').forEach(btn => {
+if (btn.textContent === category) {
+btn.click();
+}
+});
+document.getElementById('search-input').value = '';
+searchSuggestions.classList.add('hidden');
+});
+suggestionsList.appendChild(suggestion);
+});
+searchSuggestions.classList.remove('hidden');
+} else {
+searchSuggestions.classList.add('hidden');
+}
+}
+</script>
+<footer class="w-full text-center py-4 mt-8 text-xs opacity-70">
+  &copy; <span id="current-year"></span> iBookmark.my <p> Made with ❤️ by <strong>suresh.app</strong>
+</footer>
+
+<script>
+  // Dynamically set the current year
+  document.getElementById('current-year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
